@@ -21,7 +21,7 @@ Quire/
 ├── test.py              # Performs basic SQL operations and validations
 ├── .env                 # Environment variables (e.g., AWS credentials)
 ├── requirements.txt     # Python dependencies
-├── README.md            # Project documentation
+├── dicom_metadata.db    # database
 ├── db.py                # Creation of database tables and Insertion of data into tables
 └── visualization.ipynb  # Data Extraction from tables and perform basic EDA
 ```
@@ -122,6 +122,20 @@ To handle 1,000+ scans:
 ---
 
 ## Database Schema
+
+### DICOM Metadata Table
+| Column               | Type   | Description                        |
+|----------------------|--------|------------------------------------|
+| `PatientID`          | TEXT   | Unique identifier for the patient |
+| `StudyInstanceUID`   | TEXT   | Unique identifier for the study    |
+| `SeriesInstanceUID`  | TEXT   | Unique identifier for the series   |
+| `SliceThickness`     | REAL   | Thickness of the slice            |
+| `PixelSpacing`       | TEXT   | Spacing between pixels            |
+| `StudyDate`          | TEXT   | Date of the study                 |
+| `Modality`           | TEXT   | Modality of the scan              |
+| `Manufacturer`       | TEXT   | Manufacturer of the equipment     |
+
+
 ### Patient Table
 | Column              | Type   | Description                        |
 |---------------------|--------|------------------------------------|
@@ -156,14 +170,10 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ---
 
-## License
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 ## Contact
-For questions or support, feel free to reach out to [Vikas Reddy](mailto:your-email@example.com).
+For questions or support, feel free to reach out to [Vikas Reddy](mailto:vikasreddy.bijivemula@gmail.com).
 
 ---
 
 Let me know if you'd like me to tweak anything!
+
