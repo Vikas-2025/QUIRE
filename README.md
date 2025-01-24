@@ -1,6 +1,6 @@
 # Quire: DICOM Metadata Pipeline
 
-Quire is a lightweight pipeline for handling medical imaging data, specifically DICOM files. It supports data ingestion, metadata extraction, and storage in a structured format, and provides basic reporting and visualizations.
+Quire is a lightweight pipeline for handling medical imaging data, specifically DICOM files. It supports data pulling from s3 as well as local, metadata extraction, and storage in a structured format, and provides basic reporting and visualizations.
 
 ---
 
@@ -15,15 +15,15 @@ Quire is a lightweight pipeline for handling medical imaging data, specifically 
 ## Project Structure
 ```
 Quire/
-├── s3.py              # Handles S3 and local DICOM file downloading
-├── download.py        # Orchestrates data download process
-├── process.py         # Handles metadata extraction and database storage
-├── test.py            # Performs basic SQL operations and validations
-├── .env               # Environment variables (e.g., AWS credentials)
-├── requirements.txt   # Python dependencies
-├── README.md          # Project documentation
-├── .gitignore         # Files/folders to ignore in version control
-└── venv/              # Virtual environment (not included in the repo)
+├── s3.py                # Handles S3 and local DICOM file downloading
+├── download.py          # Orchestrates of whole pipeline ( main file to run s3 and local data,s3 process is commented)
+├── process.py           # processin of downloded data and get metadata ( both s3 and local)
+├── test.py              # Performs basic SQL operations and validations
+├── .env                 # Environment variables (e.g., AWS credentials)
+├── requirements.txt     # Python dependencies
+├── README.md            # Project documentation
+├── db.py                # Creation of database tables and Insertion of data into tables
+└── visualization.ipynb  # Data Extraction from tables and perform basic EDA
 ```
 
 ---
@@ -38,7 +38,7 @@ Quire/
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/Vikas-20255/QUIRE.git
+git clone https://github.com/Vikas-2025/QUIRE.git
 cd QUIRE
 ```
 
