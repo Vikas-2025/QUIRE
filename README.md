@@ -1,23 +1,169 @@
-#DICOM Metadata Pipeline
-##Overview
-This project processes a subset of 10-15 CT scans in DICOM format from the LIDC-IDRI dataset. The pipeline downloads the scans (from a local directory or an S3 bucket), extracts relevant metadata from the DICOM headers, organizes the data, stores it in an SQLite database, and generates basic data summaries and visualizations.
-##Features
-**Data Ingestion:**
+# Quire: DICOM Metadata Pipeline
 
-Downloads DICOM files programmatically from an S3 bucket or a local directory.
-Handles folder structures with multiple DICOM files per study.
-Includes error handling for corrupted or missing files.
-**Metadata Extraction:**
+Quire is a lightweight pipeline for handling medical imaging data, specifically DICOM files. It supports data ingestion, metadata extraction, and storage in a structured format, and provides basic reporting and visualizations.
 
-Extracts metadata fields like Patient ID, Study Instance UID, Series Instance UID, Slice Thickness, and more.
-Supports a logical folder structure: <PatientID>/<StudyInstanceUID>/<SeriesInstanceUID>.
-Data Storage:
+---
 
-Stores extracted metadata in an SQLite database with a normalized schema (tables for patients, studies, and series).
-**Reporting & Visualization:**
+## Features
+- **Data Ingestion**: Download DICOM files from S3 or load from a local directory.
+- **Metadata Extraction**: Extract key metadata such as Patient ID, Study Instance UID, Slice Thickness, and Pixel Spacing.
+- **Data Storage**: Store metadata in a SQLite database with a structured schema.
+- **Basic Reporting**: Generate summary statistics and visualizations of the dataset.
 
-Generates summary statistics:
-Total number of studies and slices.
-Average slices per study.
-Distribution of slice thickness.
-Includes optional visualizations using Matplotlib and Seaborn.
+---
+
+## Project Structure
+```
+Quire/
+├── s3.py              # Handles S3 and local DICOM file downloading
+├── download.py        # Orchestrates data download process
+├── process.py         # Handles metadata extraction and database storage
+├── test.py            # Performs basic SQL operations and validations
+├── .env               # Environment variables (e.g., AWS credentials)
+├── requirements.txt   # Python dependencies
+├── README.md          # Project documentation
+├── .gitignore         # Files/folders to ignore in version control
+└── venv/              # Virtual environment (not included in the repo)
+```
+
+---
+
+## Prerequisites
+- Python 3.8+
+- Virtual environment setup (recommended)
+
+---
+
+## Setup
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/Vikas-20255/QUIRE.git
+cd QUIRE
+```
+
+### Step 2: Create a Virtual Environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+### Step 3: Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### Step 4: Configure Environment Variables
+1. Rename `.env.example` to `.env`:
+   ```bash
+   mv .env.example .env
+   ```
+2. Update the `.env` file with your credentials and paths:
+   ```env
+   AWS_ACCESS_KEY=your-aws-access-key
+   AWS_SECRET_KEY=your-aws-secret-key
+   S3_BUCKET_NAME=your-s3-bucket-name
+   S3_PREFIX=your-s3-prefix
+   LOCAL_DICOM_DIR=./lidc_small_dset
+   OUTPUT_DIR=./output_dicom
+   DB_PATH=dicom_metadata.db
+   LOCAL_DOWNLOAD_FROM_S3=./download
+   ```
+
+---
+
+## Usage
+
+### 1. Download Data
+Download DICOM files from S3 or a local directory by running:
+```bash
+python download.py
+```
+
+### 2. Extract Metadata and Populate Database
+Process DICOM files and store metadata in the SQLite database:
+```bash
+python process.py
+```
+
+### 3. Test and Query Data
+Perform SQL operations and validate data:
+```bash
+python test.py
+```
+
+---
+
+## Visualizations
+Basic visualizations include:
+1. **Total Number of Studies**
+2. **Total Slices Across All Scans**
+3. **Average Number of Slices per Study**
+4. **Distribution of Slice Thickness**
+5. **Gender Distribution in Patients**
+
+Visualizations are automatically generated as part of the process script.
+
+---
+
+## Scalability
+To handle 1,000+ scans:
+- **Parallel Processing**: Use libraries like `multiprocessing` or `Dask` to parallelize metadata extraction.
+- **Cloud Storage**: Migrate to cloud-based databases like AWS RDS or MongoDB Atlas for scalable storage.
+- **Batch Processing**: Split datasets into manageable batches for efficient handling.
+
+---
+
+## Error Handling and Monitoring
+- **Logging**: All errors are logged using Python's `logging` module.
+- **Retry Mechanism**: Automatic retries for failed downloads or database inserts.
+- **Alerts**: Integrate monitoring tools like AWS CloudWatch or Prometheus for error rate and throughput tracking.
+
+---
+
+## Database Schema
+### Patient Table
+| Column              | Type   | Description                        |
+|---------------------|--------|------------------------------------|
+| `patient_id`        | TEXT   | Unique identifier for the patient |
+| `patient_name`      | TEXT   | Patient's name                    |
+| `patient_birth_date`| TEXT   | Patient's birth date              |
+| `patient_sex`       | TEXT   | Patient's gender                  |
+| `last_menstrual_date`| TEXT  | Last menstrual date               |
+
+### Study Table
+| Column               | Type   | Description                        |
+|----------------------|--------|------------------------------------|
+| `study_instance_uid` | TEXT   | Unique identifier for the study    |
+| `study_date`         | TEXT   | Date of the study                 |
+| `study_time`         | TEXT   | Time of the study                 |
+| `study_description`  | TEXT   | Study description                 |
+| `patient_id`         | TEXT   | Foreign key to `Patient` table    |
+
+### Series Table
+| Column               | Type   | Description                        |
+|----------------------|--------|------------------------------------|
+| `series_instance_uid`| TEXT   | Unique identifier for the series   |
+| `series_date`        | TEXT   | Date of the series                |
+| `series_time`        | TEXT   | Time of the series                |
+| `series_number`      | INTEGER| Number of the series              |
+| `study_instance_uid` | TEXT   | Foreign key to `Study` table      |
+
+---
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss the proposed changes.
+
+---
+
+## License
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## Contact
+For questions or support, feel free to reach out to [Vikas Reddy](mailto:your-email@example.com).
+
+---
+
+Let me know if you'd like me to tweak anything!
