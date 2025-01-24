@@ -24,6 +24,7 @@ Quire/
 ├── dicom_metadata.db    # database
 ├── db.py                # Creation of database tables and Insertion of data into tables
 └── visualization.ipynb  # Data Extraction from tables and perform basic EDA
+└── organize.py.py       # Organize the data into <PatientID>/<StudyInstanceUID>/ format
 ```
 
 ---
@@ -94,15 +95,14 @@ python test.py
 
 ---
 
-## Visualizations
-Basic visualizations include:
+## EDA
+Basic EDA include:
 1. **Total Number of Studies**
 2. **Total Slices Across All Scans**
 3. **Average Number of Slices per Study**
 4. **Distribution of Slice Thickness**
-5. **Gender Distribution in Patients**
-
-Visualizations are automatically generated as part of the process script.
+   
+Also added some basic Visualizations.
 
 ---
 
