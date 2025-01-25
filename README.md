@@ -165,11 +165,6 @@ To handle 1,000+ scans:
 
 ---
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss the proposed changes.
-
----
-
 ## Contact
 For questions or support, feel free to reach out to [Vikas Reddy](mailto:vikasreddy.bijivemula@gmail.com).
 
